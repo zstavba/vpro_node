@@ -1,0 +1,16 @@
+import { AppDataSource } from "./data-source"
+import { Flis } from "./entity/Flis";
+import { User } from "./entity/User"
+
+
+AppDataSource.initialize().then(async () => {
+
+    const flis = AppDataSource.getRepository(Flis);
+    const find = await flis.findOneBy({
+        ident: "9945194"
+    });
+
+    console.log(find);
+   
+
+}).catch(error => console.log(error))
