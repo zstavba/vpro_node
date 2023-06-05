@@ -4,7 +4,7 @@
  API databse for a VPRO application, that I'm currentlly building, in my free time, for a company that i currentlly work as a Machine Operator.
  The ideas is based on a original app, that we are currentlly using. But since the application is old, and it started to lagg, and also sometimes crashing for no reason. I've decided to create a new version, for the company. 
  
- The API can late on be used for similar project, you create on you're own.  
+ The API can later on be used for similar project, that you can  create on you're own.  
  
  - The Application is still in development. I will update it regulary. 
 
