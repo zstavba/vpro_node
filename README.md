@@ -1,3 +1,5 @@
+![alt text](https://github.com/zstavba/vpro_node/blob/main/src/assets/logo_new.png)
+
 # VPRO 2.0 API 
  API databse for VPRO application, that I'm currentlly building. 
  - The Application is still in development. I will update it regulary. 
