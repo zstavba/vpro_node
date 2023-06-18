@@ -128,6 +128,7 @@ app.get('/warehouse/areas',WareHouse.getAreas);
 app.get('/warehouse/centers',WareHouse.getWorkCenters);
 app.get('/warehouse/upn/codes',WareHouse.getUpnCodes);
 app.get('/warehouse/control/plan',WareHouse.getControlPlan);
+app.get('/warehouse/meassurment/units',WareHouse.getMeasurementUnits);
 
 /* Production  Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get("/production/alternatives", Production.getALternatives);

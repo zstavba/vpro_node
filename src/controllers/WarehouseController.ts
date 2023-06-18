@@ -2,6 +2,7 @@ import { AppDataSource } from "../data-source";
 import { Areas } from "../entity/Areas";
 import { ControlPlan } from "../entity/ControlPlan";
 import { CostCities } from "../entity/CostCities";
+import { MeasurementUnits } from "../entity/MeasurementUnits";
 import { OrganizationalUnits } from "../entity/OrganizationalUnits";
 import { UpnCodes } from "../entity/UpnCodes";
 import { WarehouseCategories } from "../entity/WarehouseCategories";
@@ -173,6 +174,20 @@ class WarehouseController {
             });
 
         } catch(error){
+            return res.status(400).json({
+                message: error
+            });
+        }
+    }
+
+    getMeasurementUnits = async (req:any, res:any, next:any) => {
+        try {
+            const MessurmentUnitsList: any = await AppDataSource.manager.find(MeasurementUnits);
+
+            return res.status(200).json({
+                measurement_units_list: MessurmentUnitsList
+            });
+        } catch (error) {
             return res.status(400).json({
                 message: error
             });

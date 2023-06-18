@@ -6,27 +6,61 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
     firstName: string
 
-    @Column()
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
     lastName: string
 
-    @Column({ default: null })
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
     username: string
 
-    @Column()
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
     email: string
 
-    @Column({ default: null })
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
     password: string
 
-    @Column({ default: null })
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
     sex: string
 
-    @Column({ default: null })
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
     age: number
 
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })    
+    user_identification: string
 
     
 }
