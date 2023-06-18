@@ -1,5 +1,11 @@
+![alt text](https://github.com/zstavba/vpro_node/blob/main/src/assets/logo_new.png)
+
 # VPRO 2.0 API 
- API databse for VPRO application, that I'm currentlly building. 
+ API databse for a VPRO application, that I'm currentlly building, in my free time, for a company that i currentlly work as a Machine Operator.
+ The ideas is based on a original app, that we are currentlly using. But since the application is old, and it started to lagg, and also sometimes crashing for no reason. I've decided to create a new version, for the company. 
+ 
+ The API can later on be used for similar project, that you can  create on you're own.  
+ 
  - The Application is still in development. I will update it regulary. 
 
 # Packages 
