@@ -91,38 +91,40 @@ export class ArticleBaics {
     packaging_type: string;
 
     @Column({
-        type: "boolean",
-        default: 0,
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
     })
-    traceability: boolean;
+    traceability: string;
+
+    @Column({
+        type: "text",
+        default: null,
+        collation: "utf8_slovenian_ci"
+    })
+    stock: string;
 
     @Column({
         type: "boolean",
-        default: 0,
-    })
-    stock: boolean;
-
-    @Column({
-        type: "boolean",
-        default: 0,
+        default: null,
     })
     hidden: boolean;
 
     @Column({
         type: "boolean",
-        default: 0,
+        default: null,
     })
     intrasant: boolean;
     
     @Column({
         type: "boolean",
-        default: 0,
+        default: null,
     })
     pallet: boolean;
 
     @Column({
         type: "boolean",
-        default: 0,
+        default: null,
     })
     a_crate: boolean;
 

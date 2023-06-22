@@ -19,10 +19,12 @@ import CountryController from './controllers/CountryController';
 import UserController from './controllers/UserController';
 import WarehouseController from './controllers/WarehouseController';
 import ProductionController from './controllers/ProductionController';
+import UploadController from './controllers/UploadController';
 
 const app = express();
 /* Setting the Work Order file storage  */
 app.set(express.static(path.join(`${__dirname}/assets`)));
+
 
 const PORT = 3000;
 
@@ -55,6 +57,9 @@ const Country = new CountryController();
 const User = new UserController();
 const WareHouse = new WarehouseController();
 const Production = new ProductionController();
+
+/* Uploading files to DB  */
+const Upload = new UploadController();
 
 app.get("/",Home.index);
 
@@ -136,7 +141,12 @@ app.get("/production/alternatives", Production.getALternatives);
 
 /* Articles  Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get('/article/types/list',Articles.getArticleType);
+app.get('/article/list',Articles.getList);
+app.get('/articles/info/basic/:ident',Articles.getArticleInfo);
 
+/* Upload Data functions  */
+app.get('/upload/articles/basics',Upload.getArticlesFilesBasics);
+app.get('/update/articles/basics',Upload.updateExsitingData);
 
 export default router;
 
