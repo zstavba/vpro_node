@@ -143,10 +143,13 @@ app.get("/production/alternatives", Production.getALternatives);
 app.get('/article/types/list',Articles.getArticleType);
 app.get('/article/list',Articles.getList);
 app.get('/articles/info/basic/:ident',Articles.getArticleInfo);
+app.get('/articles/info/second/:id',Articles.getArticleSecondInformation);
+app.delete('/articles/delete/:id',Articles.deleteArticle);
 
 /* Upload Data functions  */
 app.get('/upload/articles/basics',Upload.getArticlesFilesBasics);
 app.get('/update/articles/basics',Upload.updateExsitingData);
+app.get('/upload/articles/second/information',Upload.getArticleSecondInformation);
 
 export default router;
 

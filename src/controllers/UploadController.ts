@@ -17,6 +17,8 @@ import { Counrty } from "../entity/Country";
 import { ArticleType } from "../entity/ArticleType";
 import { Classification } from "../entity/Classifications";
 import { GroupType } from "../entity/GroupType";
+import { Warehouses } from "../entity/Warehouses";
+import { ArticleSecondInformation } from "../entity/ArticleSecondInformation";
 
 class UploadController {
 
@@ -142,6 +144,48 @@ class UploadController {
             return res.status(400).json(error);
         }
     }
+
+    getArticleSecondInformation = async (req:any, res:any, next: any) => {
+        try {
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'filtri_ostalo.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });
+
+            records.map(async item =>  {
+                const getWarehouse : any = await AppDataSource.manager.findBy(Warehouses,{
+                    id: item.SKLADISCE
+                });
+
+                let data = new ArticleSecondInformation();
+                data.id = item.ID_ART;
+                data.net_mass = (item.TEZA === undefined) ? null: item.TEZA;
+                data.gross_weight = (item.TEZA === undefined) ? null: item.TEZA;
+                data.length = (item.DOLZINA === undefined) ? null : item.DOLZINA;
+                data.width = (item.SIRINA === undefined) ? null: item.SIRINA;
+                data.thickness = null;
+                data.volume = (item.VOLUMEN === undefined) ? null: item.VOLUMEN;
+                data.standart = (item.STANDART === undefined) ? null : item.STANDART;
+                data.quality = (item.KVALITETA === undefined) ? null: item.KVALITETA;
+                data.kala = (item.KALO === undefined) ? null : item.KALO;
+                data.inspection = (item.KONTROLA_P === undefined) ? null: item.KONTROLA_P;
+                data.warehouse = (this.checkIfObjectIsEmpty(getWarehouse) == undefined) ? null : getWarehouse[0].id;
+
+                await AppDataSource.manager.save(data);
+            });
+
+
+            return res.status(200).json("JSON data has been reed");
+
+        } catch (error) {   
+            return res.status(400).json(error);
+        }
+    }
+
+
 
 }
 
