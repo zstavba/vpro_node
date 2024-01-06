@@ -7,9 +7,8 @@ export class MeasurementUnits {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(name => User)
-    @JoinColumn({ name: "fk_user_id" })
-    @Column({ default: 1 })
+    @ManyToOne(type => User)
+    @JoinColumn({name: 'fk_user_id'})
     fk_user_id: User;
 
     @Column({

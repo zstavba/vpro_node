@@ -182,11 +182,12 @@ class WarehouseController {
 
     getMeasurementUnits = async (req:any, res:any, next:any) => {
         try {
-            const MessurmentUnitsList: any = await AppDataSource.manager.find(MeasurementUnits);
+            const MessurmentUnitsList: any = await AppDataSource.getRepository(MeasurementUnits)
+                                                                .createQueryBuilder('MeassurmentUnits')
+                                                                .leftJoinAndSelect('MeassurmentUnits.fk_user_id','User')
+                                                                .getMany();
 
-            return res.status(200).json({
-                measurement_units_list: MessurmentUnitsList
-            });
+            return res.status(200).json(MessurmentUnitsList);
         } catch (error) {
             return res.status(400).json({
                 message: error

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne } from "typeorm"
 import { User } from "./User";
 
 @Entity()
@@ -6,6 +6,13 @@ export class DDVType {
 
     @PrimaryGeneratedColumn()
     id: number; 
+
+    @ManyToOne(name => User)
+    @JoinColumn({name: "fk_user_id"})
+    @Column({
+        default: 1
+    })
+    fk_user_id: User;
 
     @Column({
         type: "text",

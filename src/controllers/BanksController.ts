@@ -39,11 +39,12 @@ class BanksController {
     }
 
     getDDVType = async (req:any, res:any, next: any) => {
-        const DDV = await AppDataSource.manager.find(DDVType);
+        const DDV = await AppDataSource.getRepository(DDVType)
+                                                    .createQueryBuilder("DDVType")
+                                                    .leftJoinAndSelect("DDVType.fk_user_id","User")
+                                                    .getMany();
 
-        return res.status(200).json({
-            "ddv_list": DDV
-        });
+        return res.status(200).json(DDV);
     }
 
     getPaymentType = async (req:any, res:any, next:any) => {

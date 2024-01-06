@@ -10,8 +10,14 @@ import { ArticleType } from "../entity/ArticleType";
 import { ArticleBaics } from "../entity/ArticleBasics";
 import { ArticleSecondInformation } from "../entity/ArticleSecondInformation";
 
+type KeyToFuncMap<T> = {
+    [K in keyof T]: () => Promise<void>;
+};
+  
 class ArticleController {
 
+
+    
     getList = async (req:any, res:any, next:any) => {
         try {
             const List = await  AppDataSource.getRepository(ArticleBaics).find({ 
@@ -21,9 +27,7 @@ class ArticleController {
                                                                     },
                                                                 });
 
-            return res.status(200).json({
-                article_list: List
-            })
+            return res.status(200).json(List)
 
         } catch(error){
             return res.status(400).json({
@@ -36,9 +40,7 @@ class ArticleController {
         try {
             const ArticleTypeList = await AppDataSource.manager.find(ArticleType);
 
-            return res.status(200).json({
-                article_type_list: ArticleTypeList
-            })
+            return res.status(200).json(ArticleTypeList)
         } catch (error){
             return res.status(400).json({
                 message: error
@@ -55,9 +57,7 @@ class ArticleController {
               relations: ['group1', 'group2', 'group3', 'group4', 'mu', 'country', 'article_type', 'tariffs', 'tax', 'supplier', 'manufacturer'],
             });
             
-            return res.status(200).json({
-                info: List
-            });
+            return res.status(200).json(List);
 
         } catch (error) {
             return res.status(400).json(error);
@@ -71,6 +71,7 @@ class ArticleController {
             return res.status(400).json(error);
         }
     }
+
 
     getArticleSecondInformation =  async (req: any, res:any, next: any) => {
         try {

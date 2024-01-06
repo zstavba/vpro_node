@@ -10,6 +10,23 @@ import { CustomTariffs } from "../entity/CustomsTariffs";
 
 class CountryController {
 
+    getById = async (req:any, res:any, next:any) => {
+        try {
+            const byID = await AppDataSource.manager.findBy(Counrty, {
+                id: req.params.id
+            });
+
+            return res.status(200).json(byID);
+            
+        } catch (error: any) {
+            return res.status(400).json({
+                message: error
+            });
+        }
+    }
+
+
+
     getZipCode = async (req:any, res:any, next:any) => {
         try {
             const zipcode = await AppDataSource.manager.find(ZipCode);
@@ -24,6 +41,7 @@ class CountryController {
             });
         }
     }
+    /* Functions for cuntryies  */
 
     getCountry = async (req:any, res:any, next:any) => {
         try {
@@ -39,14 +57,25 @@ class CountryController {
             });
         }
     }
+    createCountry = async (req:any, res:any,next:any) => {
+
+    }
+
+    updateCountry = async (req:any, res:any,next:any) => {
+        
+    }
+
+    deleteCountry = async (req:any, res:any,next:any) => {
+        
+    }
+
+    /* Functions for Languages  */
 
     getLanguage = async (req:any,res:any, next:any) => {
         try {
             const languages = await AppDataSource.manager.find(Languages);
 
-            return res.status(200).json({
-                'languages_list': languages
-            });
+            return res.status(200).json(languages);
 
         } catch ( error: any) {
             return res.status(400).json({
@@ -55,6 +84,20 @@ class CountryController {
         }
     }
 
+    createLanguage = async (req:any, res:any,next:any) => {
+
+    }
+
+    updateLanguage = async (req:any, res:any,next:any) => {
+        
+    }
+
+    deleteLanguage = async (req:any, res:any,next:any) => {
+        
+    }
+
+    /* Functions for Custom Tariffs  */
+
     getCostumTariffs = async (req:any, res:any,next:any) => {
         try {
             const CustomTarrifsList = await AppDataSource.getRepository(CustomTariffs)
@@ -62,14 +105,24 @@ class CountryController {
                                                         .leftJoinAndSelect("CustomTariffs.em","MeasurementUnits")
                                                         .getMany();
 
-            return res.status(200).json({
-                custom_tariffs_list: CustomTarrifsList
-            });
+            return res.status(200).json(CustomTarrifsList);
         } catch( error ) {
             return res.status(200).json({
                 message: error
             })
         }
+    }
+
+    createCustomTariffs = async (req:any, res:any,next:any) => {
+
+    }
+
+    updateCustomTariffs = async (req:any, res:any,next:any) => {
+        
+    }
+
+    deleteCustomTariffs = async (req:any, res:any,next:any) => {
+        
     }
 
 

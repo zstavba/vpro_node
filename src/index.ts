@@ -6,6 +6,8 @@ import BanksController from './controllers/BanksController';
 import ClassificationsController from './controllers/ClassificationsController';
 import DispatchController from './controllers/DispatchController';
 import GroupController from './controllers/GroupController';
+
+import * as multer from 'multer';
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -27,6 +29,17 @@ app.set(express.static(path.join(`${__dirname}/assets`)));
 
 
 const PORT = 3000;
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Set the destination folder where files will be saved on the server
+    cb(null, path.join(__dirname, 'assets/uploads'));
+  },
+  filename: (req, file, cb) => {
+    // Use the original filename or generate a unique name
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
@@ -78,7 +91,7 @@ app.get('/banks/list',Banks.get);
 app.get('/banks/bankruptcy/type', Banks.getBankruptcyType);
 app.get("/banks/dispatch",Dispatch.get);
 app.get("/banks/sectors/list",Banks.getSectors);
-app.get("/banks/ddv/list",Banks.getDDVType);
+app.get("/banks/tax/list",Banks.getDDVType);
 app.get("/banks/payments/list",Banks.getPaymentType);
 app.get("/banks/currencies/list",Banks.getCurrencies);
 
@@ -110,13 +123,33 @@ app.get("/units/list",Units.get);
 /* Klasifikacije   POST,PUT,GET,DELETE,UPDATE  */
 
 app.get('/classifications/list', Classification.get);
+app.get('/classifications/object/:id', Classification.getByID);
+app.delete('/classifications/delete/object/:id',Classification.deleteItem)
 
  /* Država, podatki   POST,PUT,GET,DELETE,UPDATE  */
 
+ /* Getters  */
+ app.get('/country/:id',Country.getById);
  app.get('/country',Country.getCountry);
  app.get('/country/zipcode',Country.getZipCode);
  app.get('/country/languages',Country.getLanguage);
  app.get('/country/custom/tariffs', Country.getCostumTariffs);
+
+/* Post */
+app.post('/country/create/',Country.createCountry);
+app.post('/country/create/language',Country.createLanguage);
+app.post('/country/create/custom/tariffs',Country.createCustomTariffs);
+
+app.post('/country/update/',Country.updateCountry);
+app.post('/country/update/language',Country.updateLanguage);
+app.post('/country/update/custom/tariffs',Country.updateCustomTariffs);
+
+
+/* Delete */
+app.delete('/country/delete/:id',Country.deleteCountry);
+app.delete('/language/delete/:id',Country.deleteLanguage);
+app.delete('/custom/tariffs/delete:id',Country.deleteCustomTariffs);
+
 
  /* User Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get('/users',User.get);
@@ -150,7 +183,8 @@ app.delete('/articles/delete/:id',Articles.deleteArticle);
 app.get('/upload/articles/basics',Upload.getArticlesFilesBasics);
 app.get('/update/articles/basics',Upload.updateExsitingData);
 app.get('/upload/articles/second/information',Upload.getArticleSecondInformation);
-
+app.post('/upload/users',upload.single('partners'),Upload.uploadUsers);
+app.get("/upload/get/files",Upload.getUploadedFiles);
 export default router;
 
 

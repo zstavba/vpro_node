@@ -16,7 +16,6 @@ export class ControlPlan {
     @JoinColumn({ name: "fk_user_id" })
     user: User;
 
-
     @Column({
         type: "text",
         default: null,

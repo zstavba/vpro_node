@@ -12,11 +12,18 @@ import { TrafficType } from "../entity/TrafficType";
 class UnitsController {
 
     get = async (req:any, res:any, next:any) => {
-        const units_list = await AppDataSource.manager.find(MeasurementUnits);
-
-        return res.status(200).json({
-            "units": units_list
-        });
+        try {
+            const MessurmentUnitsList: any = await AppDataSource.getRepository(MeasurementUnits)
+                                                                .createQueryBuilder('MeassurmentUnits')
+                                                                .leftJoinAndSelect('MeassurmentUnits.fk_user_id','User')
+                                                                .getMany();
+            return res.status(200).json(MessurmentUnitsList);
+    
+        } catch (error: any) {
+            return res.status(400).json({
+                message: error
+            });
+        }
     }
 
 }

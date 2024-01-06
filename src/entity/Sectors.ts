@@ -15,8 +15,8 @@ export class Sectors  {
     @Column({ type: "text", collation: "utf8_slovenian_ci" })
     status: string; 
 
-    @Column({ type: "text", collation: "utf8_slovenian_ci" })
-    active: string; 
+    @Column({ type: "boolean", default: 1 })
+    active: boolean; 
 
     @Column({ type: "text", collation: "utf8_slovenian_ci" })
     description: string; 

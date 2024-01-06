@@ -19,6 +19,7 @@ import { Classification } from "../entity/Classifications";
 import { GroupType } from "../entity/GroupType";
 import { Warehouses } from "../entity/Warehouses";
 import { ArticleSecondInformation } from "../entity/ArticleSecondInformation";
+import { User } from "../entity/User";
 
 class UploadController {
 
@@ -186,6 +187,97 @@ class UploadController {
     }
 
 
+    checkForNonUTF8Characters = (text: string): string => {
+        if (!text.includes('?')) {
+            return text; // Base case: no more question marks found
+        }
+
+        const index = text.indexOf('?');
+        const char = text[index - 1]; // Get the character before the question mark
+      
+        // Define the replacement value based on the character before the question mark
+        let replacement: string;
+        switch (char) {
+          case 'Š':
+            replacement = "Š";
+          break;
+          case 'Č':
+            replacement = "Č"
+            break;
+          case 'Ž':
+            replacement = 'Ž';
+            break;
+          default:
+            replacement = '-';
+            break;
+        }
+        const replacedText = text.slice(0, index) + replacement + text.slice(index + 1);
+
+        // Recursively call the function to replace remaining question marks
+        return this.checkForNonUTF8Characters(replacedText);
+    }
+
+    uploadUsers = async (req:any, res:any, next:any) => {
+        try {
+            let ReadFile = req.file;
+            const filePath = path.join(process.cwd(), 'src', 'assets', 'uploads', ReadFile.filename);
+            const fileData = fs.readFileSync(filePath, 'utf8');
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileData, { columns: true, encoding: "utf8" }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });
+            
+            return res.status(200).json(records);
+
+        } catch(error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    getUploadedFiles = async (req:any, res:any, next:any) => {
+        try {
+            const filePath = path.join(process.cwd(), 'src', 'assets', 'uploads');
+
+            const filesInfo = await new Promise<(string | fs.Stats)[]>((resolve, reject) => {
+                fs.readdir(filePath, async (err, files) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        const fileInfoPromises = files.map(async (file) => {
+                            const fullFilePath = path.join(filePath, file);
+                            const stats = await fs.promises.stat(fullFilePath);
+                            return {
+                                name: file,
+                                uploaded: stats.birthtime, // Creation time
+                                lastModified: stats.mtime // Last modification time
+                            };
+                        });
+        
+                        let fileInfo: any = await Promise.all(fileInfoPromises);
+                        resolve(fileInfo);
+                    }
+                });
+            });
+
+            return res.status(200).json({
+                files: filesInfo
+            });
+
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+
+    readUploadedFile =async (req:any, res:any, next:any) => {
+        try {
+            
+        } catch(error) {
+            return res.status(400).json(error);
+        }
+    }
 
 }
 

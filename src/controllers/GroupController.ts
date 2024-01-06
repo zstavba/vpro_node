@@ -19,9 +19,7 @@ class GroupController {
                                                     .leftJoinAndSelect("group_type.fk_user_id","user")
                                                     .getMany();
         
-        return res.status(200).json({
-            "group_type_list": group_type_list
-        });
+        return res.status(200).json(group_type_list);
     }
 
     getType = async (req: any, res: any, next: any) => {

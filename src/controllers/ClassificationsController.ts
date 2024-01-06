@@ -22,8 +22,50 @@ class ClassificationsController{
     }
 
 
-    getBy = (req:any, res:any, next: any) => {
-        
+    getByID =  async (req:any, res:any, next: any) => {
+        try {
+            let ByID = await AppDataSource.manager.findBy(Classification, {
+                id: req.params.id
+            })
+
+            return res.status(200).json(ByID);
+
+
+        } catch (error: any)  {
+            return res.status(400).json({
+                message: error
+            })
+        }
+    }
+
+    deleteItem = async (req:any, resd:any, next:any) => {
+        try {
+            let ItemID = req.params.id;
+
+            if(ItemID == '' || ItemID == null || ItemID == undefined)
+                throw new Error(`Paramater ItemID:  ${ItemID} ne obstaja !!`);
+
+            const findItem = await AppDataSource.manager.findBy(Classification, {
+                id: ItemID
+            });
+
+            if(findItem != null || findItem == undefined)
+                throw new Error(`Objekt z IDjem ${ItemID} ne obstaja !`)
+
+            const deleteItem = await AppDataSource.manager.delete(Classification, {
+                id: ItemID
+            })
+
+            return resd.status(200).json({
+                message: `Object z paramaterom ID: ${ItemID} je bil uspešno izbrisan.`
+            })
+
+
+        } catch(error: any) {
+            return resd.status(400).json({
+                message: error
+            })
+        }
     }
 
 

@@ -2,6 +2,13 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne
 import { User } from "./User";
 import { WarehouseUnits } from "./WarehouseUnits";
 
+
+export enum CategoryFormat  {
+    Defaults = "defaults",
+    Commercial = "commercial",
+    Production = "production"
+}
+
 @Entity()
 export class WarehouseCategories {
 
@@ -37,6 +44,14 @@ export class WarehouseCategories {
     })
     link: string;
     
+    @Column({
+        type: 'enum',
+        enum: CategoryFormat,
+        default: CategoryFormat.Defaults
+      })
+      type: CategoryFormat
+
+
     @Column({
         type: "boolean",
         default: null,

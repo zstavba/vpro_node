@@ -53,7 +53,7 @@ export class Warehouses {
 
 
     @Column({
-        default: null,
+        default: false,
     })
     active: boolean;
 
