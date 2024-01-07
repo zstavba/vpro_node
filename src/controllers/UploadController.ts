@@ -20,11 +20,62 @@ import { GroupType } from "../entity/GroupType";
 import { Warehouses } from "../entity/Warehouses";
 import { ArticleSecondInformation } from "../entity/ArticleSecondInformation";
 import { User } from "../entity/User";
+import { UserInformation } from "../entity/UserInformation";
+import { info } from "console";
+import { ZipCode } from "../entity/ZipCode";
+import { performance } from "perf_hooks";
 
 class UploadController {
 
+    importDataANDUserInformation = async  (req:any, res:any, next:any) => {
+        try {
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'dobavitelji.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });
 
-    /* Checking if the object is null or undefined or if the specific object length is 0 then it returns  undefined;  */
+            if(records == null || records == undefined)
+                throw new Error(`Izbrana datoteka žal ne obsatja !`);
+            let startTime = performance.now();
+            records.map(async item => {
+                
+                const getCountry: any = await AppDataSource.manager.findBy(Counrty, {
+                    type: item.DRZAVA
+                });
+                
+                const getZipCode: any = await AppDataSource.manager.findBy(ZipCode,{
+                    attribute: item.POSTA
+                });
+                
+                let user = new User();
+                user.firstName = item.IME;
+                user.user_identification = item.UPORABNIKI; 
+                
+                
+    
+                let information = new UserInformation();
+                information.user = user;
+                information.emsho = item.EMSO;
+                information.tax_number = item.DAV_ST;
+                information.country = (this.checkIfObjectIsEmpty(getCountry) == undefined) ? null : getCountry.id;
+                information.adress = `${item.NASELJE} ${item.ULICA} ${item.HISNA_ST}`;
+                information.phone_number = item.TELEFON; 
+
+                await AppDataSource.manager.save([user,information]);
+
+            });
+            let endTime = performance.now();
+            let responseTime = ((endTime - startTime) / 1000).toFixed(2);
+            
+            return res.status(200).json(`Podatki so bili uspešno shranjeni, čas shranjevanja podatkov: ${responseTime} s`);
+        } catch(error) {
+            return res.status(400).json(error);
+        }
+    }
+
     checkIfObjectIsEmpty = (object: Object | any): undefined => {
         if(object === undefined || object === null){
             return undefined;

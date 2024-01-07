@@ -18,7 +18,7 @@ export class Classification {
 
     @ManyToOne(name => User)
     @JoinColumn({ name: "user_id" })
-    user_id: number;
+    user_id:User;
 
     @Column({
         type: "text",

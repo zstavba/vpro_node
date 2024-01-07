@@ -15,9 +15,7 @@ class CountryController {
             const byID = await AppDataSource.manager.findBy(Counrty, {
                 id: req.params.id
             });
-
             return res.status(200).json(byID);
-            
         } catch (error: any) {
             return res.status(400).json({
                 message: error
@@ -25,15 +23,11 @@ class CountryController {
         }
     }
 
-
-
     getZipCode = async (req:any, res:any, next:any) => {
         try {
             const zipcode = await AppDataSource.manager.find(ZipCode);
 
-            return res.status(200).json({
-                'zipcodelist': zipcode
-            });
+            return res.status(200).json(zipcode);
 
         } catch ( error: any) {
             return res.status(400).json({
@@ -41,15 +35,12 @@ class CountryController {
             });
         }
     }
-    /* Functions for cuntryies  */
 
     getCountry = async (req:any, res:any, next:any) => {
         try {
             const country_list = await AppDataSource.manager.find(Counrty);
 
-            return res.status(200).json({
-                'country_list': country_list
-            });
+            return res.status(200).json(country_list);
 
         } catch ( error: any) {
             return res.status(400).json({
@@ -68,8 +59,6 @@ class CountryController {
     deleteCountry = async (req:any, res:any,next:any) => {
         
     }
-
-    /* Functions for Languages  */
 
     getLanguage = async (req:any,res:any, next:any) => {
         try {
@@ -95,8 +84,6 @@ class CountryController {
     deleteLanguage = async (req:any, res:any,next:any) => {
         
     }
-
-    /* Functions for Custom Tariffs  */
 
     getCostumTariffs = async (req:any, res:any,next:any) => {
         try {

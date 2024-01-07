@@ -153,6 +153,7 @@ app.delete('/custom/tariffs/delete:id',Country.deleteCustomTariffs);
 
  /* User Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get('/users',User.get);
+app.get('/user/type/:type', User.getUserByType);
 
 
 /* Warehouse Functionallity  POST,PUT,GET,DELETE,UPDATE */
@@ -185,6 +186,7 @@ app.get('/update/articles/basics',Upload.updateExsitingData);
 app.get('/upload/articles/second/information',Upload.getArticleSecondInformation);
 app.post('/upload/users',upload.single('partners'),Upload.uploadUsers);
 app.get("/upload/get/files",Upload.getUploadedFiles);
+app.post('/upload/new/user', Upload.importDataANDUserInformation);
 export default router;
 
 

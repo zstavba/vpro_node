@@ -10,9 +10,7 @@ class ClassificationsController{
                                                         .leftJoinAndSelect("Classification.user_id","User")
                                                         .getMany();
 
-            return res.status(200).json({
-                classifications: classifications
-            });
+            return res.status(200).json(classifications);
 
         }  catch (error: any) {
             return res.status(400).json({
