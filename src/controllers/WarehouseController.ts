@@ -19,11 +19,7 @@ class WarehouseController {
                                                              .createQueryBuilder('Warehouses')
                                                              .leftJoinAndSelect('Warehouses.unit','warehouse_units')
                                                              .getMany();
-            //console.log(warehouselist);
-
-            return res.status(200).json({
-                "warehousers_list": warehouselist
-            })
+           return res.status(200).json(warehouselist)
         } catch (error) {
             return res.status(400).json({
                 message: error
@@ -34,7 +30,6 @@ class WarehouseController {
     getCategories = async (req:any, res:any, next:any) => {
         try {
             const CategoriesList = await AppDataSource.manager.find(WarehouseCategories);
-
             return res.status(200).json({
                 categories_list: CategoriesList
             });

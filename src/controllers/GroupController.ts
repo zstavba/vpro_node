@@ -27,9 +27,7 @@ class GroupController {
             type: req.params.type
         });
 
-        return res.status(200).json({
-            "group_type_list": types
-        });
+        return res.status(200).json(types);
     }
 
     add = async (req:any, res:any, next:any) => {
