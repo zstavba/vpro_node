@@ -173,11 +173,14 @@ app.get('/warehouse/control/plan',WareHouse.getControlPlan);
 app.get('/warehouse/meassurment/units',WareHouse.getMeasurementUnits);
 
 /* Commerical Functionallity  POST,PUT,GET,DELETE,UPDATE */
+
 app.get('/commercial/exchange/rates',Commerical.getExhangeRates);
 app.get('/commerical/open/mode', Commerical.getOpenMode);
 app.get('/commercial/debit/note',Commerical.getDebitNote);
 app.get('/commercial/credit/note', Commerical.getCreditNote);
 app.get('/commercial/fakturing',Commerical.getFakturing);
+app.get('/commercial/supplier/orders',Commerical.getSupplierOrder);
+app.get('/commercial/costumer/orders',Commerical.getCostumerOrder);
 
 /* Production  Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get("/production/alternatives", Production.getALternatives);

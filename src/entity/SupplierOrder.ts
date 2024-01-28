@@ -1,16 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from "typeorm"
-import { Languages } from "./Languages";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm"
 import { User } from "./User";
+import { Languages } from "./Languages";
 
-enum FakturingType {
+enum SupplierOrderType {
     BK = 'BK',
     Fk = 'FK',
     ND = 'ND',
+    NK = 'NK',
     DEFAULT = null
 }
 
 @Entity()
-export class Fakturing {
+export class SupplierOrder {
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -33,9 +35,9 @@ export class Fakturing {
 
     @Column({
         type: "enum",
-        enum: FakturingType,
+        enum: SupplierOrderType,
     })
-    type: FakturingType;
+    type: SupplierOrderType;
 
     @Column({
         default: null,
@@ -73,4 +75,3 @@ export class Fakturing {
     created_at: Date;
 
 }
-

@@ -1,9 +1,11 @@
 import { AppDataSource } from "../data-source";
+import { CostumerOrder } from "../entity/CostumerOrder";
 import { CreditNote } from "../entity/CreditNote";
 import { DebitNote } from "../entity/DebitNote";
 import { ExchangeRate } from "../entity/ExchangeRates";
 import { Fakturing } from "../entity/Fakturing";
 import { OpenMode } from "../entity/OpenMode";
+import { SupplierOrder } from "../entity/SupplierOrder";
 
 class CommercialController {
 
@@ -59,6 +61,37 @@ class CommercialController {
         } catch(error) {
             return res.status(400).json(error);
         }
+    }
+
+
+    // getSupplier = async (req:any, res:any, next:any) => {
+    //     try {
+
+    //     } catch(error) {
+    //         return res.status(400).json(error)
+    //     }
+    // }
+
+    getSupplierOrder = async (req:any, res:any, next:any) => {
+        try {
+            let ListGetSupplierOrder = await AppDataSource.manager.find(SupplierOrder);
+
+            return res.status(200).json(ListGetSupplierOrder);
+
+        } catch(error) {
+            return res.status(400).json(error)
+        }
+    }
+
+    getCostumerOrder = async (req:any, res:any, next:any) => {
+         try {
+            let ListCostumerOrder = await AppDataSource.manager.find(CostumerOrder);
+
+            return res.status(200).json(ListCostumerOrder);
+
+         } catch(error) {
+             return res.status(400).json(error)
+         }
     }
 
 }
