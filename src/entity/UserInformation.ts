@@ -9,7 +9,8 @@ export enum UserType {
     worker = "worker",
     guest =  "guest",
     spenders = "spenders",
-    suppliers = 'suppliers'
+    suppliers = 'suppliers',
+    manufacturer = 'manufacturer'
 };
 
 @Entity()

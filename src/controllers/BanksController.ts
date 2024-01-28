@@ -60,9 +60,7 @@ class BanksController {
         try {
             const CurrenciesList = await AppDataSource.manager.find(Currencies);
             
-            return res.status(200).json({
-                "currencies_list": CurrenciesList
-            });
+            return res.status(200).json(CurrenciesList);
 
         } catch (error: any) {
             return res.status(400).json({

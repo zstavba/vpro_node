@@ -22,6 +22,8 @@ import UserController from './controllers/UserController';
 import WarehouseController from './controllers/WarehouseController';
 import ProductionController from './controllers/ProductionController';
 import UploadController from './controllers/UploadController';
+import CommercialController from './controllers/CommercialController';
+
 
 const app = express();
 /* Setting the Work Order file storage  */
@@ -70,6 +72,7 @@ const Country = new CountryController();
 const User = new UserController();
 const WareHouse = new WarehouseController();
 const Production = new ProductionController();
+const Commerical = new CommercialController();
 
 /* Uploading files to DB  */
 const Upload = new UploadController();
@@ -169,6 +172,13 @@ app.get('/warehouse/upn/codes',WareHouse.getUpnCodes);
 app.get('/warehouse/control/plan',WareHouse.getControlPlan);
 app.get('/warehouse/meassurment/units',WareHouse.getMeasurementUnits);
 
+/* Commerical Functionallity  POST,PUT,GET,DELETE,UPDATE */
+app.get('/commercial/exchange/rates',Commerical.getExhangeRates);
+app.get('/commerical/open/mode', Commerical.getOpenMode);
+app.get('/commercial/debit/note',Commerical.getDebitNote);
+app.get('/commercial/credit/note', Commerical.getCreditNote);
+app.get('/commercial/fakturing',Commerical.getFakturing);
+
 /* Production  Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get("/production/alternatives", Production.getALternatives);
 
@@ -187,6 +197,8 @@ app.get('/upload/articles/second/information',Upload.getArticleSecondInformation
 app.post('/upload/users',upload.single('partners'),Upload.uploadUsers);
 app.get("/upload/get/files",Upload.getUploadedFiles);
 app.post('/upload/new/user', Upload.importDataANDUserInformation);
+app.post('/upload/exchange/rates', Upload.ExchangeRates);
+app.post('/upload/open/mode', Upload.OpenMode);
 export default router;
 
 

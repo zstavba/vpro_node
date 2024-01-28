@@ -14,10 +14,8 @@ class UserController {
         } catch (error: any) {
             return res.status(400).json(error);
         }
-
-
-
     }
+
 
     getUserByType = async (req:any, res:any, next: any) => {
         try {

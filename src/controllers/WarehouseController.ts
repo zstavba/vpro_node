@@ -2,7 +2,9 @@ import { AppDataSource } from "../data-source";
 import { Areas } from "../entity/Areas";
 import { ControlPlan } from "../entity/ControlPlan";
 import { CostCities } from "../entity/CostCities";
+import { ExchangeRate } from "../entity/ExchangeRates";
 import { MeasurementUnits } from "../entity/MeasurementUnits";
+import { OpenMode } from "../entity/OpenMode";
 import { OrganizationalUnits } from "../entity/OrganizationalUnits";
 import { UpnCodes } from "../entity/UpnCodes";
 import { WarehouseCategories } from "../entity/WarehouseCategories";
@@ -189,6 +191,8 @@ class WarehouseController {
             });
         }
     }
+
+
 
 }
 

@@ -321,14 +321,22 @@ class UploadController {
         }
     }
 
-
-    readUploadedFile =async (req:any, res:any, next:any) => {
+    ExchangeRates = async (req:any, res:any, next:any) => {
         try {
-            
-        } catch(error) {
+
+        } catch(error: any){
             return res.status(400).json(error);
         }
     }
+
+    OpenMode = async (req:any, res:any, next:any) => {
+        try {
+
+        } catch(error: any){
+            return res.status(400).json(error);
+        }
+    }
+
 
 }
 
