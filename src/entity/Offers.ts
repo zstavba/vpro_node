@@ -2,17 +2,18 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne
 import { User } from "./User";
 import { Languages } from "./Languages";
 
-enum SupplierOrderType {
+enum OffersType {
     BK = 'BK',
     Fk = 'FK',
     ND = 'ND',
     NK = 'NK',
-    Po = 'PO',
+    PO = 'PO',
+    PR = 'PR',
     DEFAULT = null
 }
 
 @Entity()
-export class SupplierOrder {
+export class Offers {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -36,9 +37,9 @@ export class SupplierOrder {
 
     @Column({
         type: "enum",
-        enum: SupplierOrderType,
+        enum: OffersType,
     })
-    type: SupplierOrderType;
+    type: OffersType;
 
     @Column({
         default: null,

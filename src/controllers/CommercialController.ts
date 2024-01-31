@@ -2,8 +2,10 @@ import { AppDataSource } from "../data-source";
 import { CostumerOrder } from "../entity/CostumerOrder";
 import { CreditNote } from "../entity/CreditNote";
 import { DebitNote } from "../entity/DebitNote";
+import { Estimates } from "../entity/Estimates";
 import { ExchangeRate } from "../entity/ExchangeRates";
 import { Fakturing } from "../entity/Fakturing";
+import { Offers } from "../entity/Offers";
 import { OpenMode } from "../entity/OpenMode";
 import { SupplierOrder } from "../entity/SupplierOrder";
 
@@ -63,15 +65,6 @@ class CommercialController {
         }
     }
 
-
-    // getSupplier = async (req:any, res:any, next:any) => {
-    //     try {
-
-    //     } catch(error) {
-    //         return res.status(400).json(error)
-    //     }
-    // }
-
     getSupplierOrder = async (req:any, res:any, next:any) => {
         try {
             let ListGetSupplierOrder = await AppDataSource.manager.find(SupplierOrder);
@@ -94,6 +87,27 @@ class CommercialController {
          }
     }
 
+    getOffers = async (req:any, res:any, next:any) => {
+         try {
+            let ListGetOffer = await AppDataSource.manager.find(Offers);
+
+            return res.status(200).json(ListGetOffer)
+
+        } catch(error) {
+             return res.status(400).json(error)
+         }
+    }
+
+    getEstimates = async (req:any, res:any, next: any) => {
+        try {   
+            let ListEstimates = await AppDataSource.manager.find(Estimates);
+
+            return res.status(200).json(ListEstimates);
+            
+        } catch(error) {
+            return res.status(400).json(error);
+        }
+    }
 }
 
 

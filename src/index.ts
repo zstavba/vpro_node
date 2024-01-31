@@ -1,5 +1,8 @@
 
-import { Session } from 'express-session';
+const session = require('express-session');
+const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
+
 import path = require('path');
 import ArticleController from './controllers/ArticleController';
 import BanksController from './controllers/BanksController';
@@ -23,38 +26,68 @@ import WarehouseController from './controllers/WarehouseController';
 import ProductionController from './controllers/ProductionController';
 import UploadController from './controllers/UploadController';
 import CommercialController from './controllers/CommercialController';
+import { Tree } from 'typeorm';
+
 
 
 const app = express();
-/* Setting the Work Order file storage  */
-app.set(express.static(path.join(`${__dirname}/assets`)));
+
+// Middleware for parsing request bodies
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 
-const PORT = 3000;
+const secretKey = crypto.randomBytes(32).toString('hex');
+let sess = session({
+  genid: function(req) {
+    return uuidv4(); // use UUIDs for session IDs
+  },
+  token: secretKey,
+  secret: secretKey,
+  resave: false,
+  saveUninitialized: true,
+  proxy: true,
+  cookie: {
+    domain: "localhost",
+    resave:false,
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // seven days in milliseconds
+    secure: true, // Only set this to true if your app is served over HTTPS
+    httpOnly:true,
+  }
+});
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+}
+
+app.use(sess); // Session middleware
+
+
+
+// Middleware for handling file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // Set the destination folder where files will be saved on the server
     cb(null, path.join(__dirname, 'assets/uploads'));
   },
   filename: (req, file, cb) => {
-    // Use the original filename or generate a unique name
     cb(null, file.originalname);
   },
 });
 const upload = multer({ storage: storage });
 
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(express.json());
-app.use(express.urlencoded());
+// Set the destination folder for static file serving
+app.use(express.static(path.join(__dirname, 'assets')));
 
-app.use((req: any, res: any, next: any) => {
-    res.setHeader('Access-Control-Allow-Origin',"*");
-    res.setHeader('Access-Control-Allow-Methods', "GET, POST, OPTIONS, PUT, PATCH, DELETE");
-    res.header('Access-Control-Allow-Headers', 'x-www-form-urlencoded, Origin, X-Requested-With, Content-Type, Accept, Authorization, *');
-  
-    next();
-  });
+// CORS middleware
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header('Access-Control-Allow-Headers', 'x-www-form-urlencoded, Origin, X-Requested-With, Content-Type, Accept, Authorization, *');
+  next();
+});
+const PORT = 3000;
 
 const router = express.Router();
 
@@ -88,7 +121,7 @@ app.get("/tkanina/:ident",Home.getFabricByIdent);
 /* Funkcionalnosti za Partnerje, POST,PUT,GET,DELETE,UPDATE  */
 //app.get("/partners/list",Partner.get);
 
-/* Funkcionalnosti za Banke, POST,PUT,GET,DELETE,UPDATE  */
+/* Funkcionalnosti za Banke, POST,PUT,GET,DELETE,UPDATE  */false
 
 app.get('/banks/list',Banks.get);
 app.get('/banks/bankruptcy/type', Banks.getBankruptcyType);
@@ -155,9 +188,14 @@ app.delete('/custom/tariffs/delete:id',Country.deleteCustomTariffs);
 
 
  /* User Functionallity  POST,PUT,GET,DELETE,UPDATE */
+// Get Options
 app.get('/users',User.get);
 app.get('/user/type/:type', User.getUserByType);
+app.get('/user/get/basic/:id',User.gtetUserById);
+app.get('/user/get/info/:id', User.gerUserInformationById);
 
+// POST Options  
+app.post('/user/login',User.login);
 
 /* Warehouse Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get('/warehouse/list', WareHouse.get);
@@ -181,6 +219,8 @@ app.get('/commercial/credit/note', Commerical.getCreditNote);
 app.get('/commercial/fakturing',Commerical.getFakturing);
 app.get('/commercial/supplier/orders',Commerical.getSupplierOrder);
 app.get('/commercial/costumer/orders',Commerical.getCostumerOrder);
+app.get('/commertial/offers',Commerical.getOffers);
+app.get('/commertial/estimates',Commerical.getEstimates);
 
 /* Production  Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get("/production/alternatives", Production.getALternatives);
