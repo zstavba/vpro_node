@@ -27,6 +27,7 @@ import ProductionController from './controllers/ProductionController';
 import UploadController from './controllers/UploadController';
 import CommercialController from './controllers/CommercialController';
 import { Tree } from 'typeorm';
+import FileManagerController from './controllers/FileManager';
 
 
 
@@ -106,6 +107,7 @@ const User = new UserController();
 const WareHouse = new WarehouseController();
 const Production = new ProductionController();
 const Commerical = new CommercialController();
+const Folder = new FileManagerController();
 
 /* Uploading files to DB  */
 const Upload = new UploadController();
@@ -233,7 +235,7 @@ app.get('/articles/info/basic/:ident',Articles.getArticleInfo);
 app.get('/articles/info/second/:id',Articles.getArticleSecondInformation);
 app.delete('/articles/delete/:id',Articles.deleteArticle);
 
-/* Upload Data functions  */
+/* Upload Data functions  FOR File Manager  */
 app.get('/upload/articles/basics',Upload.getArticlesFilesBasics);
 app.get('/update/articles/basics',Upload.updateExsitingData);
 app.get('/upload/articles/second/information',Upload.getArticleSecondInformation);
@@ -242,6 +244,16 @@ app.get("/upload/get/files",Upload.getUploadedFiles);
 app.post('/upload/new/user', Upload.importDataANDUserInformation);
 app.post('/upload/exchange/rates', Upload.ExchangeRates);
 app.post('/upload/open/mode', Upload.OpenMode);
+
+// FILE Manager Controller POST,PUT,GET,DELETE, UPDATE 
+app.get('/filemanager/get/folder/object/:title',Folder.getFolderByTitle);
+app.get('/filemanager/get/folders', Folder.getFolders);
+app.get('/filemanager/get/folders/items/:id', Folder.getFolderItems);
+app.post('/filemanager/create/new/folder', upload.array('folder_items'),Folder.createFolder);
+
+
+
+
 export default router;
 
 
