@@ -248,7 +248,6 @@ app.get('/update/articles/basics',Upload.updateExsitingData);
 app.get('/upload/articles/second/information',Upload.getArticleSecondInformation);
 app.post('/upload/users',upload.single('partners'),Upload.uploadUsers);
 app.get("/upload/get/files",Upload.getUploadedFiles);
-app.post('/upload/new/user', Upload.importDataANDUserInformation);
 app.get('/upload/debit/note',Upload.importDebitNoteInformation);
 app.get('/upload/credit/note',Upload.importCreditNoteInformation);
 app.get('/upload/fakturing',Upload.importFaktoringInformation); 

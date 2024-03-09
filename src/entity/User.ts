@@ -53,7 +53,7 @@ export class User {
         default: null,
         collation: "utf8_slovenian_ci"
     })    
-    age: string
+    birth_date: Date
 
     @Column({
         type: "text",

@@ -21,15 +21,15 @@ export class UserInformation {
 
     @ManyToOne(type =>  User)
     @JoinColumn({name: "fk_user_id"})
-    user: User;
+    fk_user_id: User;
 
     @ManyToOne(type => Counrty, {nullable: true})
     @JoinColumn({name: "fk_country_id"})
-    country: Counrty;
+    fk_country_id: Counrty;
 
     @ManyToOne(type => ZipCode, {nullable: true})
     @JoinColumn({ name: "fk_zip_code_id"})
-    zip_code: ZipCode
+    fk_zip_code_id: ZipCode
 
     @Column({
         type: "text",
