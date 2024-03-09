@@ -1,0 +1,5 @@
+TIP,TIP,NAZIV,VSEBINA,AKTIVEN,UPORABNIK,DAT_VNOSA,UPORABNIKS,DAT_SPREME,PRIVZETO,STATUS,IDG,TIPI_DOK,DODATEK1,DODATEK2,DODATEK3,DATUM_OD,DATUM_DO,JEZIK,VSEBINA_
+FK,D,Z DAVKOM,"PRI PLAÈILU SE OBVEZNO SKLICUJTE NA ŠT.: 00 <<trim(__izp_c.id_dok)+""-""+__izp_c.placnik>>",1,.  .       :  :,,.  .       :  :,D,,FKD,,,,,.  .       :  :,.  .       :  :,,7,
+FK,NB,BREZ DAVKA IN BREZ OPISA,,1,.  .       :  :,,.  .       :  :,N,,FKNB,,,,,.  .       :  :,.  .       :  :,,7,
+FK,NI,IZVOZ,"Pri plaèilu se sklicujte na št.: 00 <<trim(__izp_c.id_dok)+""-""+__izp_c.partner>>V primeru zamude pri plaèilu, vam bomo zaraèunali zakonske zamudne obresti. Tožbeni zahtevek v primeru neizvršenega plaèila bo vložen brez opomina. Reklamacije upoš",1,.  .       :  :,,.  .       :  :,N,,FKNI,,,,,.  .       :  :,.  .       :  :,,7,
+FK,OC,OBRAÈUN COMMERCE,"IZVOZNIK: COMMERCE LJUBLANAPROIZVAJALEC: KONUS KONEX d.o.o. 5490227PRISTOJNA BANKA: BANKA CELJE - ŠIFRA DEJ. 19.200VRSTA IZVOZA: OBRAÈUN ZA KOMISIJSKI -POSREDNIŠKI IZVOZIZVOZ PO 31,ÈL. UL89/98 OPROŠÈEN DDVPARITETA: EXWPLAÈILO: 60 DNI PO",1,.  .       :  :,,.  .       :  :,N,,FKOC,,,,,.  .       :  :,.  .       :  :,,7,

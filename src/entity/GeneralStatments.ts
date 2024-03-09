@@ -2,17 +2,19 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne
 import { User } from "./User";
 import { Languages } from "./Languages";
 
-enum SupplierOrderType {
+enum GeneralStatmentsType {
     BK = 'BK',
     Fk = 'FK',
     ND = 'ND',
     NK = 'NK',
-    Po = 'PO',
+    PO = 'PO',
+    PR = 'PR',
+    XX = "XX", 
     DEFAULT = null
 }
 
 @Entity()
-export class SupplierOrder {
+export class GeneralStatments {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -24,8 +26,9 @@ export class SupplierOrder {
 
     @ManyToOne(() => Languages)
     @JoinColumn({ name: 'fk_language_id' })
-    @Column({ default: null })
+    @Column({ default: 7 })
     fk_language_id: Languages;
+
 
     @Column({
         default: null,
@@ -34,18 +37,13 @@ export class SupplierOrder {
     })
     idg: string;
 
-    @Column({
-        type: "enum",
-        enum: SupplierOrderType,
-    })
-    type: SupplierOrderType;
 
     @Column({
         default: null,
         type: "text",
         collation: "utf8_slovenian_ci",
     })
-    document_type: string;
+    title: string;
 
     @Column({
         default: null,
@@ -55,11 +53,25 @@ export class SupplierOrder {
     description: string;
 
     @Column({
-        default: 0,
+        default: null,
+        type: "text",
+        collation: "utf8_slovenian_ci",
+    })
+    status: string;
+
+    @Column({
+        type: "enum",
+        enum: GeneralStatmentsType,
+    })
+    type: GeneralStatmentsType;
+
+    @Column({
+        default: 1,
         type: "boolean",
         collation: "utf8_slovenian_ci",
     })
-    active:boolean;
+    active: boolean;
+
 
     @Column({
         type: "date",
@@ -71,8 +83,9 @@ export class SupplierOrder {
     @Column({
         type: "date",
         collation: "utf8_slovenian_ci",
-        default: null
     })
     created_at: Date;
+
+
 
 }

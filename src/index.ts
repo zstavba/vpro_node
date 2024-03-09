@@ -170,7 +170,7 @@ app.delete('/classifications/delete/object/:id',Classification.deleteItem)
  app.get('/country/:id',Country.getById);
  app.get('/country',Country.getCountry);
  app.get('/country/zipcode',Country.getZipCode);
- app.get('/country/languages',Country.getLanguage);
+ app.get('/country/get/languages',Country.getLanguage);
  app.get('/country/custom/tariffs', Country.getCostumTariffs);
 
 /* Post */
@@ -192,12 +192,15 @@ app.delete('/custom/tariffs/delete:id',Country.deleteCustomTariffs);
  /* User Functionallity  POST,PUT,GET,DELETE,UPDATE */
 // Get Options
 app.get('/users',User.get);
+app.get('/users/list/info',User.getUserWithInfo);
 app.get('/user/type/:type', User.getUserByType);
 app.get('/user/get/basic/:id',User.gtetUserById);
 app.get('/user/get/info/:id', User.gerUserInformationById);
+app.get('/user/get/five',User.getFiveCostumers);
 
 // POST Options  
 app.post('/user/login',User.login);
+app.post('/user/create/data', upload.array('profile_image'), User.createNewUser);
 
 /* Warehouse Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get('/warehouse/list', WareHouse.get);
@@ -216,13 +219,17 @@ app.get('/warehouse/meassurment/units',WareHouse.getMeasurementUnits);
 
 app.get('/commercial/exchange/rates',Commerical.getExhangeRates);
 app.get('/commerical/open/mode', Commerical.getOpenMode);
-app.get('/commercial/debit/note',Commerical.getDebitNote);
-app.get('/commercial/credit/note', Commerical.getCreditNote);
+app.get('/commercial/debit/note/one',Commerical.getDebitNote);
+app.get('/commercial/credit/note/two', Commerical.getCreditNote);
 app.get('/commercial/fakturing',Commerical.getFakturing);
-app.get('/commercial/supplier/orders',Commerical.getSupplierOrder);
 app.get('/commercial/costumer/orders',Commerical.getCostumerOrder);
-app.get('/commertial/offers',Commerical.getOffers);
-app.get('/commertial/estimates',Commerical.getEstimates);
+app.get('/commercial/offers',Commerical.getOffers);
+app.get('/commercial/estimates',Commerical.getEstimates);
+app.get('/commercial/fakturing', Commerical.getFakturing);
+app.get('/commercial/get/fakturing/by/:id',Commerical.getFakturingByLanguageID);
+app.get('/commercial/general/statment',Commerical.getGeneralStatment);
+app.get('/commercial/general/statment/:id',Commerical.getGeneralStatmentByLaguageID);
+
 
 /* Production  Functionallity  POST,PUT,GET,DELETE,UPDATE */
 app.get("/production/alternatives", Production.getALternatives);
@@ -242,15 +249,26 @@ app.get('/upload/articles/second/information',Upload.getArticleSecondInformation
 app.post('/upload/users',upload.single('partners'),Upload.uploadUsers);
 app.get("/upload/get/files",Upload.getUploadedFiles);
 app.post('/upload/new/user', Upload.importDataANDUserInformation);
-app.post('/upload/exchange/rates', Upload.ExchangeRates);
-app.post('/upload/open/mode', Upload.OpenMode);
+app.get('/upload/debit/note',Upload.importDebitNoteInformation);
+app.get('/upload/credit/note',Upload.importCreditNoteInformation);
+app.get('/upload/fakturing',Upload.importFaktoringInformation); 
+app.get('/upload/offers',Upload.importOfferingInformation);
+app.get('/upload/estimates',Upload.importEstimateInformation);
+app.get('/upload/general/statments',Upload.imporGeneralStatmentsInformation);
 
 // FILE Manager Controller POST,PUT,GET,DELETE, UPDATE 
 app.get('/filemanager/get/folder/object/:title',Folder.getFolderByTitle);
 app.get('/filemanager/get/folders', Folder.getFolders);
 app.get('/filemanager/get/folders/items/:id', Folder.getFolderItems);
-app.post('/filemanager/create/new/folder', upload.array('folder_items'),Folder.createFolder);
+app.get('/filemanager/get/items/by/:id', Folder.getItemsByUser)
 
+//POST Functions
+app.post('/filemanager/create/new/folder', upload.array('folder_items'),Folder.createFolder);
+app.post('/filemanager/upload/new/items',upload.array('upload_files'),Folder.uploadNewFolderItems);
+app.post('/filemanager/create/new/sub/folder',Folder.createSubFolder);
+
+// DELETE Functions
+app.delete('/filemanager/delete/folder/item/:id', Folder.deleteFolderItem);
 
 
 

@@ -17,11 +17,11 @@ export class DebitNote {
     @JoinColumn({ name: "fk_user_id" })
     @Column({ default: 1  })
     fk_user_id: User;
-
+    
     @ManyToOne(() => Languages)
     @JoinColumn({ name: 'fk_language_id' })
-    @Column({ default: null })
     fk_language_id: Languages;
+
 
     @Column({
         default: null,
@@ -29,6 +29,13 @@ export class DebitNote {
         collation: "utf8_slovenian_ci",
     })
     idg: string;
+
+    @Column({
+        default: null,
+        type: "text",
+        collation: "utf8_slovenian_ci",
+    })
+    title: string;
 
     @Column({
         default: null,

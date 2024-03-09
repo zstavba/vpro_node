@@ -64,6 +64,7 @@ class CountryController {
         try {
             const languages = await AppDataSource.manager.find(Languages);
 
+
             return res.status(200).json(languages);
 
         } catch ( error: any) {

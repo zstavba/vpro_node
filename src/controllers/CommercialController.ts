@@ -5,9 +5,9 @@ import { DebitNote } from "../entity/DebitNote";
 import { Estimates } from "../entity/Estimates";
 import { ExchangeRate } from "../entity/ExchangeRates";
 import { Fakturing } from "../entity/Fakturing";
+import { GeneralStatments } from "../entity/GeneralStatments";
 import { Offers } from "../entity/Offers";
 import { OpenMode } from "../entity/OpenMode";
-import { SupplierOrder } from "../entity/SupplierOrder";
 
 class CommercialController {
 
@@ -34,9 +34,13 @@ class CommercialController {
 
     getDebitNote = async (req: any, res:any, next: any) => {
         try {
-            let ListDebitNote = await AppDataSource.manager.find(DebitNote);
+            let ListDebitNote = await AppDataSource.getRepository(DebitNote)
+                                                   .createQueryBuilder("DebitNote")
+                                                   .leftJoinAndSelect("DebitNote.fk_language_id","Languages")
+                                                   .getMany();
 
-            return res.status(200).json(200);
+
+            return res.status(200).json(ListDebitNote);
 
         } catch(error) {
             return res.status(400).json(error);
@@ -45,7 +49,10 @@ class CommercialController {
 
     getCreditNote = async (req:any, res:any, next:any) => {
         try {
-            let ListCreditNote = await AppDataSource.manager.find(CreditNote);
+            let ListCreditNote = await AppDataSource.getRepository(CreditNote)
+                                                    .createQueryBuilder("CreditNote")
+                                                    .leftJoinAndSelect("CreditNote.fk_language_id","Languages")
+                                                    .getMany();
 
             return res.status(200).json(ListCreditNote);
 
@@ -56,7 +63,10 @@ class CommercialController {
 
     getFakturing =  async (req:any, res:any, next: any) => {
         try {
-            let ListFakturing =  await AppDataSource.manager.find(Fakturing);
+            let ListFakturing =  await AppDataSource.getRepository(Fakturing)
+                                                    .createQueryBuilder("Fakturing")
+                                                    .leftJoinAndSelect("Fakturing.fk_language_id","Languages")
+                                                    .getMany();
 
             return res.status(200).json(ListFakturing);
 
@@ -65,16 +75,26 @@ class CommercialController {
         }
     }
 
-    getSupplierOrder = async (req:any, res:any, next:any) => {
-        try {
-            let ListGetSupplierOrder = await AppDataSource.manager.find(SupplierOrder);
 
-            return res.status(200).json(ListGetSupplierOrder);
+    getFakturingByLanguageID = async (req:any, res:any, next:any) => {
+        try {
+            let FakturingList = await AppDataSource.getRepository(Fakturing)
+                                                   .createQueryBuilder("Fakturing")
+                                                   .leftJoinAndSelect("Fakturing.fk_language_id","Languages")
+                                                   .where("Fakturing.fk_language_id = :id",{
+                                                        id: req.params.id
+                                                   })
+                                                   .getMany();
+
+            return res.status(200).json(FakturingList);
 
         } catch(error) {
-            return res.status(400).json(error)
-        }
+            return res.status(401).json({
+                message: error.message
+            });
+        }   
     }
+
 
     getCostumerOrder = async (req:any, res:any, next:any) => {
          try {
@@ -89,7 +109,10 @@ class CommercialController {
 
     getOffers = async (req:any, res:any, next:any) => {
          try {
-            let ListGetOffer = await AppDataSource.manager.find(Offers);
+            let ListGetOffer = await AppDataSource.getRepository(Offers)
+                                                  .createQueryBuilder("Offers")
+                                                  .leftJoinAndSelect("Offers.fk_language_id","Languages")
+                                                  .getMany();
 
             return res.status(200).json(ListGetOffer)
 
@@ -100,12 +123,49 @@ class CommercialController {
 
     getEstimates = async (req:any, res:any, next: any) => {
         try {   
-            let ListEstimates = await AppDataSource.manager.find(Estimates);
+            let ListEstimates = await AppDataSource.getRepository(Estimates)
+                                                    .createQueryBuilder("Estimates")
+                                                    .leftJoinAndSelect("Estimates.fk_language_id","Languages")
+                                                    .getMany();
 
             return res.status(200).json(ListEstimates);
             
         } catch(error) {
             return res.status(400).json(error);
+        }
+    }
+
+    getGeneralStatment = async (req:any, res:any, next: any) => {
+        try {
+            let GeneralStatmentList = await AppDataSource.getRepository(GeneralStatments)
+                                                         .createQueryBuilder("GS")
+                                                         .leftJoinAndSelect("GS.fk_language_id","Languages")
+                                                         .getMany();
+
+            return res.status(200).json(GeneralStatmentList);
+        } catch(error){
+            return res.status(401).json({
+                message: error.message
+            });
+        }
+    }
+
+    getGeneralStatmentByLaguageID = async (req:any, res:any, next:any) => {
+        try {
+            let GSFLID = await AppDataSource.getRepository(GeneralStatments)
+                                            .createQueryBuilder("GS")
+                                            .leftJoinAndSelect("GS.fk_language_id","Languages")
+                                            .where("GS.fk_language_id = :id",{
+                                                id: req.params.id
+                                            })
+                                            .getMany();
+            
+            return res.status(200).json(GSFLID);
+
+        } catch (error) {
+            return res.status(401).json({
+                message: error.message
+            });
         }
     }
 }

@@ -1,0 +1,8 @@
+TIP,ID,NAZIV,AKTIVEN,UPORABNIK,DAT_VNOSA,UPORABNIKS,DAT_SPREME,PRIVZETO,STATUS,IDG,TIPI_DOK,DODATEK1,DODATEK2,DODATEK3,DATUM_OD,DATUM_DO,JEZIK,VSEBINA
+PO,D,Z DAVKOM,1,.  .       :  :,UX,08.04.2020 13:31:46,D,,POD,,,,,.  .       :  :,.  .       :  :,,7,
+PO,DG,GOSAK,1,.  .       :  :,,.  .       :  :,N,,PODG,,,,,.  .       :  :,.  .       :  :,,7,
+PO,DY,proforma vzorcI YU,1,.  .       :  :,,.  .       :  :,N,,PODY,,,,,.  .       :  :,.  .       :  :,,7," BLAGO SE IZVAŽA KOT BREZPLAÈNI VZORCI. VREDNOST NA PROFORMA FAKTURI JE SAMO ZA POTREBE CARINE. BLAGO SE NE BO VRAÈALO, NITI ZANJ NE BOMO PREJELI NOBENEGA PLAÈILA IZ TUJINE.I Z J A V A:POD MATERIALNO IN MORALNO ODGOVORNOSTJO IZJAVLJAMO, DA PO"
+PO,N,Brez davka (izvoz),1,.  .       :  :,,.  .       :  :,N,,PON,,,,,.  .       :  :,.  .       :  :,,7,"DELIVERY TERMS:   EX WORKS SLOVENSKE KONJICEDELIVERY TIME:      DAYS/WEEKSPAYMENT:          IN ADVANCEBANK: BANKA CELJE d.d. CELJE,ACCOUNT No: 81181/5; SWIFT C.: SBCESI2XIBAN:       SI56 0600 0008 1181 539NOVA LJUBLJANSKA BANKA d."
+PO,NA,Vzorci - tujina,1,.  .       :  :,,.  .       :  :,N,,PONA,,,,,.  .       :  :,.  .       :  :,,7,"EXPORTER: KONUS KONEX d.o.o., SLOV. KONJICEACTIVITY CODE: 019 200TARIFF NO: GROSS WEIGHT:  kg1 PACKETCOUNTRY OF ORIGIN; SLOVENIAFREE OF CHARGE -SAMPLES FOR TESTING. VALUE IN PROFORMAS ONLY FOR CUSTOM PURPOSES."
+PO,NP,PONUDBA,1,.  .       :  :,,.  .       :  :,N,,PONP,,,,,.  .       :  :,.  .       :  :,,7,ÿ
+PO,P,YU TRG,1,.  .       :  :,,.  .       :  :,N,,POP,,,,,.  .       :  :,.  .       :  :,,7,ISPORUKA:PARITETA:TARIFNI BROJ:ROBA JE/NIJE SLO POREKLA

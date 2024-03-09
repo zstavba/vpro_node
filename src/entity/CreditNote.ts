@@ -27,6 +27,13 @@ export class CreditNote {
         type: "text",
         collation: "utf8_slovenian_ci",
     })
+    title: string;
+
+    @Column({
+        default: null,
+        type: "text",
+        collation: "utf8_slovenian_ci",
+    })
     idg: string;
 
     @Column({

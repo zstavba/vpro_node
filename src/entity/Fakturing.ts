@@ -6,6 +6,11 @@ enum FakturingType {
     BK = 'BK',
     Fk = 'FK',
     ND = 'ND',
+    D = "D",
+    NI = "NI",
+    NB = "NB",
+    OC ="OC",
+    FT = "FT",
     DEFAULT = null
 }
 
@@ -57,6 +62,13 @@ export class Fakturing {
         collation: "utf8_slovenian_ci",
     })
     active:boolean;
+
+    @Column({
+        default: null,
+        type: "text",
+        collation: "utf8_slovenian_ci",
+    })
+    status: string;
 
     @Column({
         type: "date",

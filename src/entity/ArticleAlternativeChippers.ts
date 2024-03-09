@@ -8,7 +8,6 @@ import { ArticleType } from "./ArticleType";
 import { Classification } from "./Classifications";
 import { GroupType } from "./GroupType";
 import { Languages } from "./Languages";
-import { ArticleBaics } from "./ArticleBasics";
 
 @Entity()
 export class ArticleAlternativeChippers {
@@ -27,10 +26,4 @@ export class ArticleAlternativeChippers {
         nullable: true
     })
     partners_list: User[]
-
-    @Column({
-        type: "json",
-        nullable: true
-    })
-    article_replacement: ArticleBaics[]
 }

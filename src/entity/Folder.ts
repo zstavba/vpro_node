@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm"
 import { User } from "./User";
 import { FolderItem } from "./FolderItem";
 
@@ -7,6 +7,7 @@ enum FolderType {
     TEHNOLOGIJA = 'tehnologija',
     KONTROLNI_PLAN = 'kontrolni plan',
     NAPAKE = 'vdrževalci napake',
+    USERS = 'USERS',
     DEFAULT = 'null',
 }
 
@@ -17,12 +18,17 @@ export class Folder {
 
     @ManyToOne(() => User)
     @JoinColumn({ name: "fk_user_id" })
-    @Column({ default: 1  })
     fk_user_id: User;
 
-    @ManyToMany(() => FolderItem)
-    @JoinTable()
+    @ManyToOne(() => Folder, folder => folder.children)
+    @JoinColumn({ name: "fk_parent_folder_id" })
+    parent_folder: Folder; 
+
+    @OneToMany(() => FolderItem, folderItem => folderItem.fk_folder_id)
     folder_items: FolderItem[];
+
+    @OneToMany(() => Folder, folder => folder.parent_folder)
+    children: Folder[]; 
 
     @Column({
         type: "text",
@@ -43,7 +49,7 @@ export class Folder {
         enum: FolderType,
         default: FolderType.DEFAULT
     })
-    type: FolderType
+    type: FolderType;
 
     @Column({
         type: "date",

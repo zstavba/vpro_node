@@ -12,18 +12,23 @@ import * as  fs from 'fs';
 import axios from 'axios';
 import path = require("path");
 import {parse} from 'csv-parse';
-import { ArticleBaics } from "../entity/ArticleBasics";
 import { Counrty } from "../entity/Country";
 import { ArticleType } from "../entity/ArticleType";
 import { Classification } from "../entity/Classifications";
 import { GroupType } from "../entity/GroupType";
 import { Warehouses } from "../entity/Warehouses";
-import { ArticleSecondInformation } from "../entity/ArticleSecondInformation";
 import { User } from "../entity/User";
 import { UserInformation } from "../entity/UserInformation";
 import { info } from "console";
 import { ZipCode } from "../entity/ZipCode";
 import { performance } from "perf_hooks";
+import { DebitNote } from "../entity/DebitNote";
+import { Languages } from "../entity/Languages";
+import { CreditNote } from "../entity/CreditNote";
+import { Fakturing } from "../entity/Fakturing";
+import { Offers } from "../entity/Offers";
+import { Estimates } from "../entity/Estimates";
+import { GeneralStatments } from "../entity/GeneralStatments";
 
 class UploadController {
 
@@ -88,108 +93,12 @@ class UploadController {
 
 
     getArticlesFilesBasics = async (req:any, res:any, next:any) => {
-        try {
-            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'STO.csv'));
-            const records = await new Promise<any[]>((resolve, reject) => {
-                parse(fileContents, { columns: true }, (err, data) => {
-                  if (err) reject(err);
-                  else resolve(data);
-                });
-            });
-            
-            records.map(async (record: any) => {
-                const Article = new ArticleBaics();
 
-                const getMU: any = await AppDataSource.manager.findBy(MeasurementUnits, {
-                    idg: record.EM1 
-                });
-
-                const getCountry: any = await AppDataSource.manager.findBy(Counrty, {
-                    type: record.POREKLO
-                });
-
-                const Type: any = await AppDataSource.manager.findBy(ArticleType, {
-                    type: record.TIP_ART
-                });
-
-                const ClassificationList : any = await AppDataSource.manager.findBy(Classification, {
-                    classification_id: record.KLASIFIKAC
-                });
-
-                const group3: any = await AppDataSource.manager.findBy(GroupType, {
-                    idg: record.SKUPINA_3
-                });
-
-                const group2: any = await AppDataSource.manager.findBy(GroupType, {
-                    idg: record.SKUPINA_2
-                });
-
-                const group1: any = await AppDataSource.manager.findBy(GroupType, {
-                    idg: record.SKUPINA_1
-                });
-
-                const group4: any = await AppDataSource.manager.findBy(GroupType, {
-                    idg: record.SKUPINA_4
-                });
-
-                Article.mu = (this.checkIfObjectIsEmpty(getMU) == undefined) ? null : getMU[0].id;
-                Article.country = (this.checkIfObjectIsEmpty(getCountry) == undefined) ? 279 : getCountry[0].id;
-                Article.title = (record.NAZIV === null || record.NAZIV === undefined) ? null :  record.NAZIV;
-                Article.ean = (record.EAN === null || record.EAN === undefined) ? null : record.EAN;
-                Article.code = (record.ID_ART === null || record.ID_ART === undefined) ? null : record.ID_ART;
-                Article.article_type = (this.checkIfObjectIsEmpty(Type) == undefined) ? null: Type[0].id; 
-                Article.packaging_type = null;
-                Article.stock = (record.ZALOGE === null || record.ZALOGE === undefined) ? 0: record.ZALOGE;
-                Article.intrasant = (record.INTRASAT === null || record.INTRASAT === undefined) ? null: record.INTRASAT;
-                Article.pallet = null;
-                Article.a_crate = null;
-                Article.tax = null;
-                Article.tariffs = null;
-                Article.group3 = (this.checkIfObjectIsEmpty(group3) === undefined) ? null: group3[0].id;
-                Article.group2 = (this.checkIfObjectIsEmpty(group2) === undefined) ? null: group2[0].id;
-                Article.group1 = (this.checkIfObjectIsEmpty(group1) === undefined) ? null: group1[0].id;
-                Article.group4 = (this.checkIfObjectIsEmpty(group4) === undefined) ? null: group4[0].id;
-                Article.classification = (this.checkIfObjectIsEmpty(Classification) === undefined) ? null: record.KLASIFIKAC;
-                //console.log(record);
-                await AppDataSource.manager.save(Article);
-            })
-            return res.status(200).json("OK");
-                
-        } catch (error) {
-            return res.status(400).json({
-                message: error
-            });
-        }
     }
 
     updateExsitingData = async (rea:any, res:any, next:any) => {
         try {
 
-            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'novo_silon.csv'));
-            const records = await new Promise<any[]>((resolve, reject) => {
-                parse(fileContents, { columns: true }, (err, data) => {
-                  if (err) reject(err);
-                  else resolve(data);
-                });
-            });
-            
-            records.map(async (record: any) => {
-                //console.log(record.NAZIV)
-                const findArticles = await AppDataSource.manager.findBy(ArticleBaics, {
-                    title: record.NAZIV
-                });
-
-                const Article = findArticles[0];
-
-                if(this.checkIfObjectIsEmpty(Article) != undefined) {
-                    Article.code = record.ID_ART
-                    await AppDataSource.manager.save(Article);
-                }
-
-                
-                
-                
-            });
 
             return res.status(200).json("OK");
         } catch (error) {
@@ -199,35 +108,7 @@ class UploadController {
 
     getArticleSecondInformation = async (req:any, res:any, next: any) => {
         try {
-            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'filtri_ostalo.csv'));
-            const records = await new Promise<any[]>((resolve, reject) => {
-                parse(fileContents, { columns: true }, (err, data) => {
-                  if (err) reject(err);
-                  else resolve(data);
-                });
-            });
-
-            records.map(async item =>  {
-                const getWarehouse : any = await AppDataSource.manager.findBy(Warehouses,{
-                    id: item.SKLADISCE
-                });
-
-                let data = new ArticleSecondInformation();
-                data.id = item.ID_ART;
-                data.net_mass = (item.TEZA === undefined) ? null: item.TEZA;
-                data.gross_weight = (item.TEZA === undefined) ? null: item.TEZA;
-                data.length = (item.DOLZINA === undefined) ? null : item.DOLZINA;
-                data.width = (item.SIRINA === undefined) ? null: item.SIRINA;
-                data.thickness = null;
-                data.volume = (item.VOLUMEN === undefined) ? null: item.VOLUMEN;
-                data.standart = (item.STANDART === undefined) ? null : item.STANDART;
-                data.quality = (item.KVALITETA === undefined) ? null: item.KVALITETA;
-                data.kala = (item.KALO === undefined) ? null : item.KALO;
-                data.inspection = (item.KONTROLA_P === undefined) ? null: item.KONTROLA_P;
-                data.warehouse = (this.checkIfObjectIsEmpty(getWarehouse) == undefined) ? null : getWarehouse[0].id;
-
-                await AppDataSource.manager.save(data);
-            });
+ 
 
 
             return res.status(200).json("JSON data has been reed");
@@ -321,21 +202,253 @@ class UploadController {
         }
     }
 
-    ExchangeRates = async (req:any, res:any, next:any) => {
-        try {
+    importDebitNoteInformation = async (req:any, res:any, next: any) => {
+        try{
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'bremepis.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });      
 
-        } catch(error: any){
-            return res.status(400).json(error);
+            records.map(async item => {
+                let DN: DebitNote =  new DebitNote();
+                DN.active = true;
+                DN.created_at = new Date();
+                DN.type = (item.TIP == undefined || item.TIP == null || item.TIP == '') ? null : item.TIP;
+                DN.description = (item.VSEBINA == null || item.VSEBINA == undefined || item.VSEBINA == '') ? null: item.VSEBINA;
+                let findLanguage =  await AppDataSource.manager.findBy(Languages,{
+                    id: item.JEZIK
+                })
+
+                DN.fk_language_id = (this.checkIfObjectIsEmpty(findLanguage[0]) == null) ? null: findLanguage[0];
+                DN.idg = (item.IDG == null || item.IDG == undefined || item.IDG == '') ? null: item.IDG;
+                DN.title = (item.NAZIV == null || item.NAZIV == undefined || item.NAZIV == '') ? null : item.NAZIV;
+                DN.status = (item.STATUS == null || item.STATUS == undefined || item.STATUS == '') ? null: item.STATUS;
+                DN.document_type = (item.TIP_DOK == null || item.TIP_DOK == undefined || item.TIP_DOK == '') ? null: item.TIP_DOK;
+                
+                await AppDataSource.manager.save(DN);
+            });
+
+
+
+
+            return res.status(200).json({
+                message: "Podatki so bili uspešno shranjeni !"
+            });
+
+        } catch(error) {
+            return res.status(401).json({
+                message: error.message
+            })
         }
     }
 
-    OpenMode = async (req:any, res:any, next:any) => {
+    importCreditNoteInformation = async (req:any, res:any ,next:any) => {
         try {
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'dobropis.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });      
 
-        } catch(error: any){
-            return res.status(400).json(error);
+            records.map(async item => {
+                let CN: CreditNote = new CreditNote();
+                CN.active = true;
+                CN.created_at = new Date();
+                CN.type = (item.TIP == undefined || item.TIP == null || item.TIP == '' ) ? null : item.TIP;
+                CN.title = (item.NAZIV == undefined || item.NAZIV == null || item.NAZIV == '') ? null : item.NAZIV;
+                let getLanguage = await AppDataSource.manager.findBy(Languages, {
+                    id: item.JEZIK
+                });
+
+                CN.fk_language_id = (this.checkIfObjectIsEmpty(getLanguage[0]) == null ) ? null : getLanguage[0];
+                CN.idg = (item.IDG == undefined || item.IDG == null || item.IDG == '') ? null : item.IDG;
+                CN.status = (item.STATUS == undefined || item.STATUS == null || item.STATUS == '') ? null : item.STATUS;
+                CN.description = (item.VSEBINA == undefined || item.VSEBINA == null || item.VSEBINA == '') ? null : item.VSEBINA;
+
+               await AppDataSource.manager.save(CN);
+
+            });
+
+
+            return res.status(200).json({
+                message: "Podatki so bili uspešno shranjeni !"
+            });
+            
+        } catch(error) {
+            return res.status(401).json({
+                message: error.message
+            })
         }
     }
+
+
+    importFaktoringInformation = async (req:any ,res:any, next: any) => {
+        try {
+
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'fakture_tujina.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });    
+
+
+            records.map(async item => {
+                let FK: Fakturing = new Fakturing();
+                FK.active = true;
+                FK.created_at = new Date();
+                FK.type = (item.TIP == null || item.TIP == undefined || item.TIP == '') ? null : item.TIP;
+                FK.idg = (item.IDG == null || item.IDG == undefined || item.IDG == '') ?  null : item.IDG;
+                FK.status = (item.STATUS == null || item.STATUS == undefined || item.STATUS == '') ? null : item.STATUS;
+                let findLanguage = await AppDataSource.manager.findBy(Languages,{
+                    id: item.JEZIK
+                });
+                FK.fk_language_id = (this.checkIfObjectIsEmpty(findLanguage[0]) == null ) ? null : findLanguage[0];
+                FK.description = (item.VSEBINA == null || item.VSEBINA == undefined || item.VSEBINA == '') ? null: item.VSEBINA;
+
+                await AppDataSource.manager.save(FK);
+
+
+            });
+
+
+            return res.status(200).json({
+                message: "Podatki so bili uspešno shranjeni"
+            });
+
+        } catch(error){
+            return res.status(401).json({
+                message: error.message
+            })
+        }
+    }
+
+    importOfferingInformation = async (req:any, res:any, next: any) => {
+        try {
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'bremepis.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });   
+
+            records.map(async item => {
+                let Offer: Offers = new Offers();
+
+                Offer.active = true;
+                Offer.created_at = new Date();
+                let findLanguage = await AppDataSource.manager.findBy(Languages,{
+                    id: item.JEZIK
+                });
+                Offer.fk_language_id = (this.checkIfObjectIsEmpty(findLanguage[0]) == null) ? null : findLanguage[0];
+                Offer.idg = (item.IDG == undefined || item.IDG == null || item.IDG == '') ? null : item.IDG;
+                Offer.type = (item.TIP == undefined || item.TIP == null || item.TIP == '') ? null : item.TIP;
+                Offer.description = (item.VSEBINA == undefined ||item.VSEBINA == null || item.VSEBINA == '') ? null : item.VSEBINA;
+
+
+                await AppDataSource.manager.save(Offer);
+                
+
+            });
+
+
+            return res.status(200).json({
+                message: "Podatki so bili uspešno shranjeni !"
+            });
+
+        } catch(error){
+            return res.status(401).json({
+                message: error.message
+            })
+        }
+    }
+
+    importEstimateInformation = async (req:any, res:any, next:any) => {
+        try {
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'predracuni.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });   
+
+            records.map(async item => {
+                let EST: Estimates = new Estimates();
+                EST.active = true;
+                EST.created_at = new Date();
+                EST.type = (item.TIP == null || item.TIP == undefined || item.TIP == '') ? null: item.TIP;
+                EST.document_type = (item.TIPI_DOK == null || item.TIPI_DOK == undefined || item.TIPI_DOK == '') ? null : item.TIPI_DOK;
+                EST.title = (item.NAZIV == null || item.NAZIV == undefined || item.NAZIV == '') ? null : item.NAZIV;
+                let findLanguages = await AppDataSource.manager.findBy(Languages, {
+                    id: item.JEZIK
+                });
+                EST.fk_language_id = (this.checkIfObjectIsEmpty(findLanguages[0]) == null) ? null :  findLanguages[0];
+                EST.description = (item.VSEBINA == null || item.VSEBINA == undefined || item.VSEBINA == '') ? null: item.VSEBINA;
+                EST.idg = (item.IDG == null || item.IDG == undefined || item.IDG == '') ? null: item.IDG;
+                
+                await AppDataSource.manager.save(EST);
+            });
+            
+            return res.status(200).json({
+                message: "Podatki so bili uspešno shranjeni !"
+            })
+
+        } catch(error){
+            return res.status(401).json({
+                message: error.message
+            });
+        }
+    }
+
+    imporGeneralStatmentsInformation = async (req: any, res:any, next: any) => {
+        try {   
+            const fileContents = fs.readFileSync(path.join(process.cwd(), 'src', 'assets', 'other_data', 'splošne_izjave.csv'));
+            const records = await new Promise<any[]>((resolve, reject) => {
+                parse(fileContents, { columns: true }, (err, data) => {
+                  if (err) reject(err);
+                  else resolve(data);
+                });
+            });   
+
+            records.map(async item => {
+                let GS : GeneralStatments = new GeneralStatments();
+
+                GS.active = (item.AKTIVEN == null || item.AKTIVEN == undefined || item.AKTIVEN == '') ? null: item.AKTIVEN;
+                GS.created_at = new Date();
+                let findLanguage = await AppDataSource.manager.findBy(Languages,{
+                    id: item.JEZIK
+                });
+                GS.fk_language_id = (this.checkIfObjectIsEmpty(findLanguage[0]) == null) ? null : findLanguage[0];
+                GS.idg = (item.IDG == null || item.IDG == undefined || item.IDG == '') ? null: item.IDG;
+                GS.status = (item.STATUS == null || item.STATUS == undefined || item.STATUS == '') ? null:  item.STATUS;
+                GS.title = (item.NAZIV == null || item.NAZIV == undefined || item.NAZIV == '') ? null: item.NAZIV;
+                GS.description = (item.VSEBINA == null || item.VSEBINA == undefined || item.VSEBINA == '') ? null: item.VSEBINA;
+                
+                await AppDataSource.manager.save(GS);
+
+
+            });
+
+            return res.status(200).json({
+                message: "Podatki so bili uspešno shranjeni !"
+            })
+
+        } catch(error) {
+            return res.status(401).json({
+                message: error.message
+            })
+        }
+    }
+
+
 
 
 }
